@@ -18,5 +18,6 @@ EXPOSE 8888
 USER juser
 WORKDIR /home/juser
 RUN jupyter-notebook --generate-config
+RUN jupyter nbextension enable --py widgetsnbextension
 RUN sed -i "s/#c.NotebookApp.password = ''/c.NotebookApp.password = $PASSWORD/g" /home/juser/.jupyter/jupyter_notebook_config.py
 ENTRYPOINT ["jupyter-notebook", "--notebook-dir=/home/juser", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
