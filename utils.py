@@ -2,6 +2,7 @@
 import os
 import ipywidgets as widgets
 from IPython.display import display, Javascript
+import pandas as pd
 
 
 def selectdata(directory="/tmp/datazfssa"):
@@ -16,6 +17,18 @@ def selectdata(directory="/tmp/datazfssa"):
 
 def run_all_below(ev):
     display(Javascript('IPython.notebook.execute_cells_below()'))
+
+
+def getrawdata(csvfileslist):
+    """Get raw data as pandas Data Frame."""
+    if len(csvfileslist) == 1:
+        return pd.read_csv(str(csvfileslist).strip("[']"), header=1, sep=";")
+    else:
+        filelist = []
+        for file in csvfileslist:
+            df = pd.read_csv(file, header=1, sep=";")
+            filelist.append(df)
+        return pd.concat(filelist)
 
 
 class ExplorersSelection(object):
