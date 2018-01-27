@@ -10,6 +10,8 @@ name = "pypi"
 jupyter = "*"
 matplotlib = "*"
 pandas = "*"
+ipywidgets = "*"
+pylint = "*"
 
 
 [dev-packages]
