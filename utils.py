@@ -18,6 +18,11 @@ def selectdata(directory="/tmp/datazfssa"):
 def run_all_below(ev):
     display(Javascript('IPython.notebook.execute_cells_below()'))
 
+def nextall(ev):
+    """Select next cell and run all cells below."""
+    display(Javascript('var i = IPython.notebook.get_cell();\
+                       IPython.notebook.select(i+2);\
+                       IPython.notebook.execute_cells_below()'))
 
 def getrawdata(csvfileslist):
     """Get raw data as pandas Data Frame."""
@@ -69,11 +74,18 @@ class ExplorersSelection(object):
 
         buttons = []
         for f in self.explorers:
-            button = widgets.Button(description=f, button_style='primary',
-                                    layout=widgets.Layout(width='50%', height='25px'))
-            button.on_click(on_click)
-            buttons.append(button)
-        box.children = tuple([widgets.HTML("<h4>%s</h4>" % (self._selected_explorers,))] + buttons)
+            if f in self._selected_explorers:
+                button = widgets.Button(description=f, button_style='warning',
+                                        layout=widgets.Layout(min_width='70%', height='25px'))
+                button.on_click(on_click)
+                buttons.append(button)
+            else:
+                button = widgets.Button(description=f, button_style='primary',
+                                        layout=widgets.Layout(min_width='70%', height='25px'))
+                button.on_click(on_click)
+                buttons.append(button)
+        #box.children = tuple([widgets.HTML("<h4>%s</h4>" % (self._selected_explorers,))] + buttons)
+        box.children = buttons
 
 
 def human_size(nbytes):
