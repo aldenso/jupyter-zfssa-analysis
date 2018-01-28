@@ -130,3 +130,30 @@ Now you can open your browser and test the notebooks (Remember to adjust the pat
 ```text
 http://youripaddress:8888
 ```
+
+## Auto-save .html and .py versions of the notebooks
+
+For convenience we are adding auto-saving .html and .py for the notebooks, making a more readable output for code review.
+
+You just have to add the next lines of code to your profile (~/.jupyter/jupyter_notebook_config.py).
+
+```python
+import os
+from subprocess import check_call
+
+def post_save(model, os_path, contents_manager):
+    """post-save hook for converting notebooks to .py scripts"""
+    if model['type'] != 'notebook':
+        return # only do this for notebooks
+    d, fname = os.path.split(os_path)
+    check_call(['jupyter', 'nbconvert', '--to', 'script', fname], cwd=d)
+    check_call(['jupyter', 'nbconvert', '--to', 'html', fname], cwd=d)
+
+c.FileContentsManager.post_save_hook = post_save
+```
+
+If you don't have a config file already, you can create one.
+
+```sh
+jupyter notebook --generate-config
+```
