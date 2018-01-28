@@ -133,7 +133,7 @@ http://youripaddress:8888
 
 ## Auto-save .html and .py versions of the notebooks
 
-For convenience we are adding auto-saving .html and .py for the notebooks, making a more readable output for code review.
+For convenience we are adding auto-saving .py (not .html, but we add the commented line for it) for the notebooks, making a more readable output for code review.
 
 You just have to add the next lines of code to your profile (~/.jupyter/jupyter_notebook_config.py).
 
@@ -147,7 +147,7 @@ def post_save(model, os_path, contents_manager):
         return # only do this for notebooks
     d, fname = os.path.split(os_path)
     check_call(['jupyter', 'nbconvert', '--to', 'script', fname], cwd=d)
-    check_call(['jupyter', 'nbconvert', '--to', 'html', fname], cwd=d)
+    #check_call(['jupyter', 'nbconvert', '--to', 'html', fname], cwd=d)
 
 c.FileContentsManager.post_save_hook = post_save
 ```
